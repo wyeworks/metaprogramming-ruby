@@ -30,7 +30,7 @@ class Module
 
     original_method = instance_method(method_name)
     define_method(method_name) do |*args, &method_block|
-      puts "Executing preconditions for #{method_name} - preconditions: #{preconditions&.count}"
+      puts "Executing preconditions for #{method_name}"
       preconditions.each_with_index do |pc, index|
         raise PreconditionError.new(method_name, index + 1) unless instance_exec(*args, &pc)
       end
