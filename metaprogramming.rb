@@ -14,7 +14,7 @@ class Module
     original_method = instance_method(method_name)
     define_method(method_name) do |*args, &method_block|
       # Preconditions execution
-      raise "Some precondition failed for #{method_name}" unless preconditions.all? { |pc| pc.call(*args) }
+      raise "Some precondition failed for #{method_name}" unless preconditions.all? { |pc| instance_exec(*args, &pc) }
       # Original method execution
       original_method.bind(self).call(*args, &method_block)
     end
@@ -33,7 +33,21 @@ class A
     pp x
   end
 
+  pre { true_precondition }
   def method3(x)
     pp x
+  end
+
+  pre { false_precondition }
+  def method4(x)
+    pp x
+  end
+
+  def true_precondition
+    true
+  end
+
+  def false_precondition
+    false
   end
 end
