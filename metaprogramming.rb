@@ -92,7 +92,7 @@ class Stack
 
   Node = Struct.new(:element, :next_node) do
     def chain_size
-      next_node.nil? ? 1 : 1 + next_node.size
+      next_node.nil? ? 1 : 1 + next_node.chain_size
     end
   end
 end
